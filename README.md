@@ -1,2 +1,5 @@
-# energy-trade
-Distributed microservices simulation for energy trading. Includes order, pricing, audit, and notification services with REST APIs and centralized log collection for observability. Built with Spring Boot and Log4j2 custom HTTP appender.
+#EnergyTradeSim – Distributed Microservices Simulation for Energy Trading
+
+EnergyTradeSim is a distributed microservices-based simulation environment designed to model and test scenarios in an energy trading context. It includes services for order management, pricing, auditing, notifications, and external quotation retrieval, all communicating through REST and integrated with a centralized log collector for observability.
+
+Ideal for testing distributed systems patterns, logging strategies, and service-to-service interactions in real-world energy trade workflows.
