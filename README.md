@@ -50,7 +50,7 @@ The project is built with **Spring Boot**, **Undertow**, and **Log4j2**, aiming 
 9. 📈 Performance and stress simulation
 
 ## 📁 Repository Structure
-
+````
 energy-trade-sim/
 ├── order-service/
 ├── pricing-service/
@@ -60,7 +60,7 @@ energy-trade-sim/
 ├── log-collector-service/
 ├── integration-sim/
 └── common-logging/
-
+```
 
 ## ⚖ License
 
