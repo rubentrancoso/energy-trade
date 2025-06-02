@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    
+    <!-- === Appenders === -->
+    <Appenders>
+        
+        <!-- Console padrão para logs locais -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
+
+        <!-- HttpLogCollector envia logs via POST para o Log Collector -->
+        <!-- Usa system properties/env para definir URL e service name -->
+        <HttpLogCollector name="HttpLog"
+                          collectorUrl="http://localhost:8090/log"          
+                          serviceName="OrderService"           
+        />
+        <!-- collectorUrl pode ser omitido se você passar por -Dlog.collector.url -->
+        <!-- serviceName pode ser omitido se você passar por -Dlog.service.name -->
+    </Appenders>
+
+    <!-- === Loggers === -->
+    <Loggers>
+        <Logger name="org.springframework" level="WARN"/>
+	    <Logger name="io.undertow" level="WARN"/>
+	    <Logger name="org.hibernate" level="WARN"/>
+	    <Logger name="org.springframework.web.servlet.DispatcherServlet" level="WARN"/>
+	    
+        <!-- Logger raiz: envia para Console e para o appender HTTP -->
+        <Root level="INFO">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="HttpLog"/>
+        </Root>
+    </Loggers>
+</Configuration>
