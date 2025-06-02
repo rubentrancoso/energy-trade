@@ -50,7 +50,7 @@ The project is built with **Spring Boot**, **Undertow**, and **Log4j2**, aiming 
 
 ## 🚀 Current Milestone — `v1.0.0-blueprint`
 
-The tag [`v1.0.0-blueprint`](https://github.com/rubentrancoso/energy-trade-sim/releases/tag/v1.0.0-blueprint) marks the first stable and functional snapshot of this project.
+The tag [`v1.0.0-blueprint`](https://github.com/rubentrancoso/energy-trade/releases/tag/v1.0.0-blueprint) marks the first stable and functional snapshot of this project.
 
 ### ✅ Implemented
 
