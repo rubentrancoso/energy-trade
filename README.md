@@ -36,6 +36,7 @@ The project is built with **Spring Boot**, **Undertow**, and **Log4j2**, aiming 
 - `external-cotation-gw`: Acts as a stubbed external pricing API.
 - `log-collector-service`: Captures and centralizes logs from all services.
 - `integration-sim`: CLI-based simulation client to trigger application scenarios.
+
 ![Architecture Diagram](docs/architecture-v1.0.0-blueprint.png) 
 
 ---
