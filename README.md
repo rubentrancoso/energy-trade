@@ -37,7 +37,7 @@ The project is built with **Spring Boot**, **Undertow**, and **Log4j2**, aiming 
 - `log-collector-service`: Captures and centralizes logs from all services.
 - `integration-sim`: CLI-based simulation client to trigger application scenarios.
 
-![Architecture Diagram](docs/architecture-v1.0.0-blueprint.png) 
+![Architecture Diagram](docs/architecture-v1.0.0-base.png) 
 
 ---
 
@@ -50,9 +50,9 @@ The project is built with **Spring Boot**, **Undertow**, and **Log4j2**, aiming 
 
 ---
 
-## 🚀 Current Milestone — `v1.0.0-blueprint`
+## 🚀 Current Milestone — `v1.0.0-base`
 
-The tag [`v1.0.0-blueprint`](https://github.com/rubentrancoso/energy-trade/releases/tag/v1.0.0-blueprint) marks the first stable and functional snapshot of this project.
+The tag [`v1.0.0-base`](https://github.com/rubentrancoso/energy-trade/releases/tag/v1.0.0-base) marks the first stable and functional snapshot of this project.
 
 ### ✅ Implemented
 
