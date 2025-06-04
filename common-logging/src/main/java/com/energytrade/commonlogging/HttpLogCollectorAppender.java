@@ -115,7 +115,7 @@ public class HttpLogCollectorAppender extends AbstractAppender {
             );
 
             // Envia o payload
-            try (Writer writer = new OutputStreamWriter(conn.getOutputStream())) {
+            try (Writer writer = new OutputStreamWriter(conn.getOutputStream(), java.nio.charset.StandardCharsets.UTF_8)) {
                 writer.write(jsonPayload);
             }
 

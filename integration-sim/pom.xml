@@ -11,6 +11,10 @@
 
     <artifactId>integration-sim</artifactId>
 
+    <properties>
+	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
     <dependencies>
         <!-- Web com Undertow (exclui Tomcat) -->
         <dependency>

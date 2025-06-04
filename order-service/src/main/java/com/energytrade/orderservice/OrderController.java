@@ -2,8 +2,12 @@ package com.energytrade.orderservice;
 
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Locale;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +25,8 @@ import com.energytrade.orderservice.repository.OrderRepository;
 @RestController
 @RequestMapping("/orders")
 public class OrderController {
+	
+	private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
 
 	private final OrderRepository repository;
 	private final RestTemplate restTemplate;
@@ -31,8 +37,7 @@ public class OrderController {
 
 	public OrderController(OrderRepository repository, RestTemplate restTemplate,
 			@Value("${pricing.service.url}") String pricingUrl, @Value("${audit.service.url}") String auditUrl,
-			@Value("${notification.service.url}") String notificationUrl,
-			MatchingEngine matchingEngine) {
+			@Value("${notification.service.url}") String notificationUrl, MatchingEngine matchingEngine) {
 		this.repository = repository;
 		this.restTemplate = restTemplate;
 		this.pricingUrl = pricingUrl;
@@ -42,29 +47,36 @@ public class OrderController {
 	}
 
 	@PostMapping
-	public Order createOrder(@RequestBody Order order) {
-		// Fetch current market price
-		PriceResponse price = restTemplate.getForObject(pricingUrl, PriceResponse.class);
-		order.setMarketPrice(price.getValue());
+	public ResponseEntity<?> createOrder(@RequestBody Order order) {
+	    // Validate volume before proceeding
+	    if (order.getVolume() <= 0) {
+	    	logger.warn("❌ Rejected order with invalid volume: {}", order);
+	        return ResponseEntity.badRequest()
+	                .body("Order volume must be a positive number.");
+	    }
 
-		// Initialize order state
-		order.setExecutedVolume(0.0);
-		order.setStatus(OrderStatus.PENDING);
-		order.setTimestamp(OffsetDateTime.now());
+	    // Fetch current market price
+	    PriceResponse price = restTemplate.getForObject(pricingUrl, PriceResponse.class);
+	    order.setMarketPrice(price.getValue());
 
-		Order savedOrder = repository.save(order);
-		matchingEngine.match(savedOrder);
+	    // Initialize order state
+	    order.setExecutedVolume(0.0);
+	    order.setStatus(OrderStatus.PENDING);
+	    order.setTimestamp(OffsetDateTime.now());
 
-		AuditEvent event = new AuditEvent("order-service", "ORDER_CREATED",
-				"{\"orderId\":" + savedOrder.getId() + ",\"marketPrice\":" + savedOrder.getMarketPrice() + "}");
-		restTemplate.postForObject(auditUrl, event, Void.class);
+	    Order savedOrder = repository.save(order);
+	    matchingEngine.match(savedOrder);
 
-		Notification notification = new Notification("admin@energytrade.com",
-				"Nova ordem criada com ID " + savedOrder.getId());
-		restTemplate.postForObject(notificationUrl, notification, Void.class);
+	    AuditEvent event = new AuditEvent("order-service", "ORDER_CREATED", String.format(Locale.US,
+	            "{\"orderId\":%d,\"marketPrice\":%.2f}", savedOrder.getId(), savedOrder.getMarketPrice()));
 
-		return savedOrder;
+	    Notification notification = new Notification("admin@energytrade.com",
+	            "Nova ordem criada com ID " + savedOrder.getId());
+	    restTemplate.postForObject(notificationUrl, notification, Void.class);
+
+	    return ResponseEntity.ok(savedOrder);
 	}
+
 
 	@GetMapping
 	public List<Order> listOrders() {

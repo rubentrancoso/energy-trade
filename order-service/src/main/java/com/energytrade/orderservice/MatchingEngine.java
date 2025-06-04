@@ -1,7 +1,9 @@
 package com.energytrade.orderservice;
 
+import java.time.OffsetDateTime;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -73,24 +75,36 @@ public class MatchingEngine {
             incomingOrder.setExecutedVolume(incomingOrder.getExecutedVolume() + traded);
             remainingVolume -= traded;
             
-            
-            AuditEvent auditEvent = new AuditEvent(
-            	    "order-service",
-            	    "ORDER_MATCHED",
-            	    String.format("{\"orderId\":%d,\"status\":\"%s\",\"executedVolume\":%.2f}",
-            	        incomingOrder.getId(),
-            	        incomingOrder.getStatus(),
-            	        incomingOrder.getExecutedVolume())
-        	);
-        	restTemplate.postForObject(auditUrl, auditEvent, Void.class);
+            // 🔍 AUDIT: Pairwise execution event
+            AuditEvent pairwiseMatchEvent = new AuditEvent(
+                    "order-service",
+                    "ORDER_EXECUTED_PAIRWISE",
+                    String.format(Locale.US,
+                            "{" +
+                            "\"takerOrderId\":%d," +
+                            "\"makerOrderId\":%d," +
+                            "\"matchedVolume\":%.2f," +
+                            "\"price\":%.2f," +
+                            "\"timestamp\":\"%s\"" +
+                            "}",
+                            incomingOrder.getId(),
+                            candidate.getId(),
+                            traded,
+                            candidate.getPrice(),
+                            OffsetDateTime.now().toString()
+                    )
+            );
+            restTemplate.postForObject(auditUrl, pairwiseMatchEvent, Void.class);
             	
-        	Notification notification = new Notification(
-        		    "admin@energytrade.com",
-        		    String.format("Order #%d partially/completely executed. New status: %s",
-        		        incomingOrder.getId(),
-        		        incomingOrder.getStatus())
-    		);
-    		restTemplate.postForObject(notificationUrl, notification, Void.class);
+            Notification notification = new Notification(
+                    "admin@energytrade.com",
+                    String.format("📈 Order #%d matched with #%d: %.2f @ %.2f",
+                            incomingOrder.getId(),
+                            candidate.getId(),
+                            traded,
+                            candidate.getPrice())
+            );
+            restTemplate.postForObject(notificationUrl, notification, Void.class);
 
             if (remainingVolume <= 0.00001) break; // Fully matched
 
@@ -101,13 +115,15 @@ public class MatchingEngine {
             incomingOrder.setStatus(OrderStatus.EXECUTED);
         } else if (incomingOrder.getExecutedVolume() > 0) {
             incomingOrder.setStatus(OrderStatus.PARTIAL);
+        } else {
+            incomingOrder.setStatus(OrderStatus.PENDING);
         }
-
+        
         // Persist updates
         orderRepository.save(incomingOrder);
         orderRepository.saveAll(candidates);
 
-        log.info("Matching completed for order id {}: executedVolume={}, status={}",
+        log.info("🧮 Matching completed for order id {}: executedVolume={}, status={}",
                 incomingOrder.getId(),
                 incomingOrder.getExecutedVolume(),
                 incomingOrder.getStatus());
@@ -115,10 +131,12 @@ public class MatchingEngine {
         AuditEvent executionEvent = new AuditEvent(
         	    "order-service",
         	    "ORDER_MATCHED",
-        	    "{\"orderId\":" + incomingOrder.getId() +
-        	    ",\"executedVolume\":" + incomingOrder.getExecutedVolume() +
-        	    ",\"status\":\"" + incomingOrder.getStatus() + "\"}"
-        	);
+        	    String.format(Locale.US,
+        	        "{\"orderId\":%d,\"executedVolume\":%.2f,\"status\":\"%s\"}",
+        	        incomingOrder.getId(),
+        	        incomingOrder.getExecutedVolume(),
+        	        incomingOrder.getStatus())
+        );
     	restTemplate.postForObject(auditUrl, executionEvent, Void.class);
     	
     	log.info("Matching completed for order #{} - final status: {}, executed: {}, remaining: {}",

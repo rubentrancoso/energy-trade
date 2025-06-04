@@ -1,6 +1,8 @@
 package com.energytrade.logcollector.controller;
 
 import com.energytrade.logcollector.model.LogEntry;
+
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -13,7 +15,7 @@ public class LogController {
 
     private final List<LogEntry> logs = Collections.synchronizedList(new ArrayList<>());
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public void receiveLog(@RequestBody LogEntry entry) {
         logs.add(entry);
         System.out.printf("[LOG - %s] [%s] [%s] [%s]: %s%n",

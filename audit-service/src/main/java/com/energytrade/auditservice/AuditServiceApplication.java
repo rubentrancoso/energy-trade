@@ -13,6 +13,6 @@ public class AuditServiceApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(AuditServiceApplication.class, args);
-        logger.info("🚀 Testando envio de log para o Log Collector.");
+        logger.info("🚀 Audit Service is up and running! 🌐");
     }
 }

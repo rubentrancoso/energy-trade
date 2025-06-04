@@ -13,7 +13,7 @@
         <!-- Usa system properties/env para definir URL e service name -->
         <HttpLogCollector name="HttpLog"
                           collectorUrl="http://localhost:8090/log"          
-                          serviceName="PricingService"           
+                          serviceName="Simulator"           
         />
         <!-- collectorUrl pode ser omitido se você passar por -Dlog.collector.url -->
         <!-- serviceName pode ser omitido se você passar por -Dlog.service.name -->
