@@ -66,7 +66,7 @@ This version builds on [`v1.0.0-base`](https://github.com/rubentrancoso/energy-t
 - Pretty-printed JSON logs for simulation and verification
 - Extended simulation coverage with edge cases
 
-→ Full changelog: [v1.1.0-matching Release Page](./releases/v1.1.0-matching.md)
+→ Full changelog: [v1.1.0-matching Release Page](./docs/v1.1.0-matching.md)
 
 ---
 
