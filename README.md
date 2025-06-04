@@ -72,7 +72,7 @@ This version builds on [`v1.0.0-base`](https://github.com/rubentrancoso/energy-t
 
 ## 🕘 Deprecated Milestone — `v1.0.0-base`
 
-> ⚠️ This milestone is no longer the active baseline. It was succeeded by [`v1.1.0-matching`](#🚀-current-milestone--v110-matching).
+> ⚠️ This milestone is no longer the active baseline. It was succeeded by [`v1.1.0-matching`](https://github.com/rubentrancoso/energy-trade/releases/tag/v1.1.0-matching).
 
 The tag [`v1.0.0-base`](https://github.com/rubentrancoso/energy-trade/releases/tag/v1.0.0-base) marked the first stable and functional snapshot of this project.
 
