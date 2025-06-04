@@ -118,6 +118,62 @@ energy-trade-sim/
 └── common-logging/
 ```
 
+
+## 🛠️ How to Run the Project Using `start-all.bat`
+
+This project includes a Windows batch script (`start-all.bat`) that automates the startup of all core services in separate terminal windows.
+
+### ✅ Prerequisites
+
+- Java 11+ installed and configured in your system PATH
+- Maven installed and accessible via command line (`mvn -v`)
+- A terminal that supports UTF-8 and emojis (Windows Terminal or CMD with chcp 65001)
+- Ports 8080–8085 available for service binding
+
+### 🚀 Running the Project
+
+1. Open a terminal as Administrator (if needed for port permissions).
+2. Navigate to the root of the project where `start-all.bat` is located.
+3. Execute:
+
+```bash
+start-all.bat
+```
+
+This will:
+
+- Open a new terminal window for each service:
+  - Order Service
+  - Pricing Service
+  - Audit Service
+  - Notification Service
+  - External Cotation Gateway
+  - Integration Simulator
+- Display colored log output with emojis if UTF-8 is correctly configured.
+
+### 🔍 Verifying Everything Works
+
+- Look for the message `🚀 [Service Name] is up and running! 🌐` in each terminal.
+- The integration simulator will fetch prices, post several test orders (including edge cases), and log results.
+- Confirm that:
+  - Logs from all services appear in the log collector
+  - Audit events are stored and printed
+  - Order matching is happening based on volume and price
+
+### 🧪 Simulated Test Cases Include
+
+- Buy/Sell pairs that match fully or partially
+- Orders with extreme or invalid values (e.g. negative volume)
+- Pretty-printed logs for easy inspection
+
+---
+
+If you face any encoding issues, ensure your terminal code page is set to UTF-8 using:
+
+```cmd
+chcp 65001
+```
+
 ## ⚖ License
 
 This project is licensed under the MIT License. See `LICENSE` file for details.
