@@ -50,9 +50,31 @@ The project is built with **Spring Boot**, **Undertow**, and **Log4j2**, aiming 
 
 ---
 
-## 🚀 Current Milestone — `v1.0.0-base`
+## 🚀 Current Milestone — `v1.1.0-matching`
 
-The tag [`v1.0.0-base`](https://github.com/rubentrancoso/energy-trade/releases/tag/v1.0.0-base) marks the first stable and functional snapshot of this project.
+The tag [`v1.1.0-matching`](https://github.com/rubentrancoso/energy-trade/releases/tag/v1.1.0-matching) introduces the **Order Matching Engine**, the first intelligent execution component of the platform.
+
+This version builds on [`v1.0.0-base`](https://github.com/rubentrancoso/energy-trade/releases/tag/v1.0.0-base), adding full support for price-time matching logic, partial executions, execution status tracking, and event propagation.
+
+### ✅ Implemented
+
+- Automatic matching between BUY and SELL orders based on price and timestamp
+- Partial and full execution logic with volume tracking
+- Status transitions: `PENDING`, `PARTIAL`, `EXECUTED`
+- Audit events and notifications dispatched on match
+- Rejection of invalid orders (e.g. negative volume)
+- Pretty-printed JSON logs for simulation and verification
+- Extended simulation coverage with edge cases
+
+→ Full changelog: [v1.1.0-matching Release Page](./releases/v1.1.0-matching.md)
+
+---
+
+## 🕘 Deprecated Milestone — `v1.0.0-base`
+
+> ⚠️ This milestone is no longer the active baseline. It was succeeded by [`v1.1.0-matching`](#🚀-current-milestone--v110-matching).
+
+The tag [`v1.0.0-base`](https://github.com/rubentrancoso/energy-trade/releases/tag/v1.0.0-base) marked the first stable and functional snapshot of this project.
 
 ### ✅ Implemented
 
@@ -68,10 +90,9 @@ The tag [`v1.0.0-base`](https://github.com/rubentrancoso/energy-trade/releases/t
 
 These features will be released incrementally and tagged for easy comparison.
 
-
 | Feature                                     | Status     | Tag (planned)       |
 |---------------------------------------------|------------|---------------------|
-| Order Matching Engine (buy/sell execution)  | Planned    | `v1.1.0-matching`   |
+| Order Matching Engine (buy/sell execution)  | ✅ Delivered | `v1.1.0-matching`   |
 | Order Expiration & Cleanup                  | Planned    | `v1.2.0-expiry`     |
 | Order Cancellation                          | Planned    | `v1.3.0-cancel`     |
 | Pricing Feed & Dynamic Simulation           | Planned    | `v1.4.0-pricing`    |
