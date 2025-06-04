@@ -52,9 +52,9 @@ The project is built with **Spring Boot**, **Undertow**, and **Log4j2**, aiming 
 
 ## 🚀 Current Milestone — `v1.1.0-matching`
 
-The tag [`v1.1.0-matching`](https://github.com/rubentrancoso/energy-trade/releases/tag/v1.1.0-matching) introduces the **Order Matching Engine**, the first intelligent execution component of the platform.
+The tag [`v1.1.0-matching`](./releases/tag/v1.1.0-matching) introduces the **Order Matching Engine**, the first intelligent execution component of the platform.
 
-This version builds on [`v1.0.0-base`](https://github.com/rubentrancoso/energy-trade/releases/tag/v1.0.0-base), adding full support for price-time matching logic, partial executions, execution status tracking, and event propagation.
+This version builds on [`v1.0.0-base`](./releases/tag/v1.0.0-base), adding full support for price-time matching logic, partial executions, execution status tracking, and event propagation.
 
 ### ✅ Implemented
 
@@ -74,7 +74,7 @@ This version builds on [`v1.0.0-base`](https://github.com/rubentrancoso/energy-t
 
 > ⚠️ This milestone is no longer the active baseline. It was succeeded by [`v1.1.0-matching`](#🚀-current-milestone--v110-matching).
 
-The tag [`v1.0.0-base`](https://github.com/rubentrancoso/energy-trade/releases/tag/v1.0.0-base) marked the first stable and functional snapshot of this project.
+The tag [`v1.0.0-base`](./releases/tag/v1.0.0-base) marked the first stable and functional snapshot of this project.
 
 ### ✅ Implemented
 
