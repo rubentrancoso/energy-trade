@@ -48,12 +48,6 @@ echo Iniciando os demais microsserviços
 echo ================================
 
 @echo on
-set "ORDER_ARGS=-Dspring-boot.run.jvmArguments=-Dlog.collector.url=%LOG_COLLECTOR_URL% -Dlog.service.name=OrderService"
-set "PRICING_ARGS=-Dspring-boot.run.jvmArguments=-Dlog.collector.url=%LOG_COLLECTOR_URL% -Dlog.service.name=PricingService"
-set "AUDIT_ARGS=-Dspring-boot.run.jvmArguments=-Dlog.collector.url=%LOG_COLLECTOR_URL% -Dlog.service.name=AuditService"
-set "NOTIF_ARGS=-Dspring-boot.run.jvmArguments=-Dlog.collector.url=%LOG_COLLECTOR_URL% -Dlog.service.name=NotificationService"
-set "GW_ARGS=-Dspring-boot.run.jvmArguments=-Dlog.collector.url=%LOG_COLLECTOR_URL% -Dlog.service.name=ExternalCotationGateway"
-
 start "Order Service" cmd /k "chcp 65001 > nul && cd order-service && mvn spring-boot:run"
 start "Pricing Service" cmd /k "chcp 65001 > nul && cd pricing-service && mvn spring-boot:run"
 start "Audit Service" cmd /k "chcp 65001 > nul && cd audit-service && mvn spring-boot:run"

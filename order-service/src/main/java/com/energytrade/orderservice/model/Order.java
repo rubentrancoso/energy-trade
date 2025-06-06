@@ -60,8 +60,16 @@ public class Order {
 	@Column(nullable = false)
 	private double marketPrice;
 	
+	@Column(nullable = false)
+	private OffsetDateTime expirationTimestamp;
+	
 	public double getRemainingVolume() {
 	    return volume - executedVolume;
 	}
+	
+	public boolean isExpired() {
+	    return OffsetDateTime.now().isAfter(this.expirationTimestamp);
+	}
+
 
 }

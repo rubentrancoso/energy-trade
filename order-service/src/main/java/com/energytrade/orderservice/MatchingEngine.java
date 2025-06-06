@@ -4,6 +4,7 @@ import java.time.OffsetDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,13 @@ public class MatchingEngine {
     private String notificationUrl;
 
     public void match(Order incomingOrder) {
+    	if (incomingOrder.getExpirationTimestamp().isBefore(OffsetDateTime.now())) {
+    	    incomingOrder.setStatus(OrderStatus.EXPIRED);
+    	    orderRepository.save(incomingOrder);
+    	    log.info("Order {} is expired. Marked as EXPIRED and skipped.", incomingOrder.getId());
+    	    return;
+    	}
+
     	if (incomingOrder.getStatus() != OrderStatus.PENDING) {
     	    log.info("Order {} already processed. Skipping.", incomingOrder.getId());
     	    return;
@@ -45,8 +53,10 @@ public class MatchingEngine {
 
         // Retrieve all potential counterpart orders
         List<Order> candidates = orderRepository.findEligibleCounterpartOrders(
-                oppositeType, incomingOrder.getPrice()
-        );
+        	    oppositeType, incomingOrder.getPrice()
+        	).stream()
+        	  .filter(o -> !o.isExpired()) 
+        	  .collect(Collectors.toList());
 
         // Sort by price-time priority
         candidates.sort(Comparator

@@ -6,7 +6,8 @@ public enum OrderStatus {
     PENDING,
     PARTIAL,
     EXECUTED,
-    CANCELLED;
+    CANCELLED,
+    EXPIRED;
 	
     @JsonCreator
     public static OrderStatus from(String value) {

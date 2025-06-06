@@ -50,14 +50,33 @@ The project is built with **Spring Boot**, **Undertow**, and **Log4j2**, aiming 
 
 ---
 
-## 🚀 Current Milestone — `v1.1.0-matching`
+## 🚀 Current Milestone — `v1.2.0-expiry`
 
-The tag [`v1.1.0-matching`](https://github.com/rubentrancoso/energy-trade/releases/tag/v1.1.0-matching) introduces the **Order Matching Engine**, the first intelligent execution component of the platform.
+The tag [`v1.2.0-expiry`](https://github.com/rubentrancoso/energy-trade/releases/tag/v1.2.0-expiry) introduces **Order Expiration & Cleanup**, expanding the robustness and integrity of the matching system.
 
-This version builds on [`v1.0.0-base`](https://github.com/rubentrancoso/energy-trade/releases/tag/v1.0.0-base), adding full support for price-time matching logic, partial executions, execution status tracking, and event propagation.
+This version ensures that expired orders are never executed, and introduces a scheduled cleanup task to maintain data consistency over time.
 
-### ✅ Implemented
+✅ **Implemented**
+- Validation of expiration timestamp for incoming orders
+- Filtering out expired counterpart orders during matching
+- Status `EXPIRED` automatically assigned when appropriate
+- Scheduled cleanup task (`@Scheduled`) to mark as `EXPIRED` all `PENDING` orders past their expiration timestamp
+- Configurable cleanup interval via `application.properties`
+- Test coverage for expired incoming orders and expired candidates
+- Full audit and logging of expired order handling
 
+→ [Full changelog: `v1.2.0-expiry` Release Page](./docs/v1.2.0-expiry.md)
+
+---
+
+## 🕘 Deprecated Milestones
+
+### 🕘 `v1.1.0-matching`
+⚠️ This milestone is no longer the active baseline. It was succeeded by `v1.2.0-expiry`.
+
+The tag [`v1.1.0-matching`](https://github.com/rubentrancoso/energy-trade/releases/tag/v1.1.0-matching) introduced the **Order Matching Engine**, the first intelligent execution component of the platform.
+
+✅ **Implemented**
 - Automatic matching between BUY and SELL orders based on price and timestamp
 - Partial and full execution logic with volume tracking
 - Status transitions: `PENDING`, `PARTIAL`, `EXECUTED`
@@ -66,18 +85,14 @@ This version builds on [`v1.0.0-base`](https://github.com/rubentrancoso/energy-t
 - Pretty-printed JSON logs for simulation and verification
 - Extended simulation coverage with edge cases
 
-→ Full changelog: [v1.1.0-matching Release Page](./docs/v1.1.0-matching.md)
+→ [Full changelog: `v1.1.0-matching` Release Page](./docs/v1.1.0-matching.md)
 
 ---
 
-## 🕘 Deprecated Milestone — `v1.0.0-base`
+### 🕘 `v1.0.0-base`
+The tag `v1.0.0-base` marked the first stable and functional snapshot of this project.
 
-> ⚠️ This milestone is no longer the active baseline. It was succeeded by [`v1.1.0-matching`](https://github.com/rubentrancoso/energy-trade/releases/tag/v1.1.0-matching).
-
-The tag [`v1.0.0-base`](https://github.com/rubentrancoso/energy-trade/releases/tag/v1.0.0-base) marked the first stable and functional snapshot of this project.
-
-### ✅ Implemented
-
+✅ **Implemented**
 - Services compile and run independently
 - Structured logs are correctly emitted and collected centrally
 - Logs are traceable to originating service via metadata
@@ -93,7 +108,7 @@ These features will be released incrementally and tagged for easy comparison.
 | Feature                                     | Status     | Tag (planned)       |
 |---------------------------------------------|------------|---------------------|
 | Order Matching Engine (buy/sell execution)  | ✅ Delivered | `v1.1.0-matching`   |
-| Order Expiration & Cleanup                  | Planned    | `v1.2.0-expiry`     |
+| Order Expiration & Cleanup                  | ✅ Delivered | `v1.2.0-expiry`     |
 | Order Cancellation                          | Planned    | `v1.3.0-cancel`     |
 | Pricing Feed & Dynamic Simulation           | Planned    | `v1.4.0-pricing`    |
 | Full Audit Trail & Reporting                | Planned    | `v1.5.0-audit`      |
