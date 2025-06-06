@@ -85,6 +85,8 @@ The tag [`v1.1.0-matching`](https://github.com/rubentrancoso/energy-trade/releas
 - Pretty-printed JSON logs for simulation and verification
 - Extended simulation coverage with edge cases
 
+→ [Full changelog: `v1.1.0-matching` Release Page](https://github.com/rubentrancoso/energy-trade/releases/tag/v1.1.0-matching)
+
 ---
 
 ### 🕘 `v1.0.0-base`
@@ -97,6 +99,7 @@ The tag `v1.0.0-base` marked the first stable and functional snapshot of this pr
 - Batch scripts orchestrate service startup with dependency awareness
 - Orders can be created and logged using `integration-sim`
 
+→ [Full changelog: `v1.0.0-base` Release Page](https://github.com/rubentrancoso/energy-trade/releases/tag/v1.0.0-base)
 
 ---
 
