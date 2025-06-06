@@ -28,19 +28,19 @@ public class OrderStatusPersistenceTest {
 
     @Test
     public void shouldPersistOrderStatusAsString() {
-        for (OrderStatus status : OrderStatus.values()) {
-            Order order = Order.builder()
-                    .type(OrderType.BUY)
-                    .price(100.0)
-                    .volume(1.0)
-                    .executedVolume(0.0)
-                    .status(status)
-                    .timestamp(OffsetDateTime.now())
-                    .marketPrice(100.0)
-                    .build();
+    	for (OrderStatus status : OrderStatus.values()) {
+    	    Order order = Order.builder()
+    	            .type(OrderType.BUY)
+    	            .price(100.0)
+    	            .volume(10.0)
+    	            .status(status) // aqui estava o erro
+    	            .marketPrice(98.0)
+    	            .timestamp(OffsetDateTime.now())
+    	            .expirationTimestamp(OffsetDateTime.now().plusHours(1))
+    	            .build();
 
-            repository.save(order);
-        }
+    	    repository.save(order);
+    	}
 
         entityManager.flush(); // força persistência no banco
         entityManager.clear(); // limpa cache do JPA
@@ -51,7 +51,8 @@ public class OrderStatusPersistenceTest {
 
         // Verifica se todos os enums foram persistidos como string
         assertThat(statuses).containsExactlyInAnyOrderElementsOf(
-                List.of("PENDING", "PARTIAL", "EXECUTED", "CANCELLED")
+                List.of("PENDING", "PARTIAL", "EXECUTED", "CANCELLED", "EXPIRED")
         );
+
     }
 }
