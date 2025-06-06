@@ -76,14 +76,18 @@ This version ensures that expired orders are never executed, and introduces a sc
 
 The tag [`v1.1.0-matching`](https://github.com/rubentrancoso/energy-trade/releases/tag/v1.1.0-matching) introduced the **Order Matching Engine**, the first intelligent execution component of the platform.
 
-✅ **Implemented**
-- Automatic matching between BUY and SELL orders based on price and timestamp
-- Partial and full execution logic with volume tracking
-- Status transitions: `PENDING`, `PARTIAL`, `EXECUTED`
-- Audit events and notifications dispatched on match
-- Rejection of invalid orders (e.g. negative volume)
-- Pretty-printed JSON logs for simulation and verification
-- Extended simulation coverage with edge cases
+<details>
+  <summary><strong>✅ Implementation</strong></summary>
+
+- Automatic matching between BUY and SELL orders based on price and timestamp  
+- Partial and full execution logic with volume tracking  
+- Status transitions: `PENDING`, `PARTIAL`, `EXECUTED`  
+- Audit events and notifications dispatched on match  
+- Rejection of invalid orders (e.g. negative volume)  
+- Pretty-printed JSON logs for simulation and verification  
+- Extended simulation coverage with edge cases  
+
+</details>
 
 → [Full changelog: `v1.1.0-matching` Release Page](./docs/v1.1.0-matching.md)
 
@@ -92,12 +96,16 @@ The tag [`v1.1.0-matching`](https://github.com/rubentrancoso/energy-trade/releas
 ### 🕘 `v1.0.0-base`
 The tag `v1.0.0-base` marked the first stable and functional snapshot of this project.
 
-✅ **Implemented**
-- Services compile and run independently
-- Structured logs are correctly emitted and collected centrally
-- Logs are traceable to originating service via metadata
-- Batch scripts orchestrate service startup with dependency awareness
-- Orders can be created and logged using `integration-sim`
+<details>
+  <summary><strong>✅ Implementation</strong></summary>
+
+- Services compile and run independently  
+- Structured logs are correctly emitted and collected centrally  
+- Logs are traceable to originating service via metadata  
+- Batch scripts orchestrate service startup with dependency awareness  
+- Orders can be created and logged using `integration-sim`  
+
+</details>
 
 ---
 
