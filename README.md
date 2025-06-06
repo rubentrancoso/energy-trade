@@ -65,7 +65,7 @@ This version ensures that expired orders are never executed, and introduces a sc
 - Test coverage for expired incoming orders and expired candidates
 - Full audit and logging of expired order handling
 
-→ [Full changelog: `v1.2.0-expiry` Release Page](https://github.com/rubentrancoso/energy-trade/releases/tag/v1.2.0-expiry)
+→ [Full changelog: `v1.2.0-expiry` Release Page](./docs/v1.2.0-expiry.md)
 
 ---
 
@@ -85,7 +85,7 @@ The tag [`v1.1.0-matching`](https://github.com/rubentrancoso/energy-trade/releas
 - Pretty-printed JSON logs for simulation and verification
 - Extended simulation coverage with edge cases
 
-→ [Full changelog: `v1.1.0-matching` Release Page](https://github.com/rubentrancoso/energy-trade/releases/tag/v1.1.0-matching)
+→ [Full changelog: `v1.1.0-matching` Release Page](./docs/v1.1.0-matching.md)
 
 ---
 
@@ -98,8 +98,6 @@ The tag `v1.0.0-base` marked the first stable and functional snapshot of this pr
 - Logs are traceable to originating service via metadata
 - Batch scripts orchestrate service startup with dependency awareness
 - Orders can be created and logged using `integration-sim`
-
-→ [Full changelog: `v1.0.0-base` Release Page](https://github.com/rubentrancoso/energy-trade/releases/tag/v1.0.0-base)
 
 ---
 
