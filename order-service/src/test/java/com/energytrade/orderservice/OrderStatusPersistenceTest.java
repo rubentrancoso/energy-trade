@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -20,39 +21,34 @@ import com.energytrade.orderservice.repository.OrderRepository;
 @DataJpaTest
 public class OrderStatusPersistenceTest {
 
-    @Autowired
-    private OrderRepository repository;
+	@Autowired
+	private OrderRepository repository;
 
-    @Autowired
-    private EntityManager entityManager;
+	@Autowired
+	private EntityManager entityManager;
 
-    @Test
-    public void shouldPersistOrderStatusAsString() {
-    	for (OrderStatus status : OrderStatus.values()) {
-    	    Order order = Order.builder()
-    	            .type(OrderType.BUY)
-    	            .price(100.0)
-    	            .volume(10.0)
-    	            .status(status) // aqui estava o erro
-    	            .marketPrice(98.0)
-    	            .timestamp(OffsetDateTime.now())
-    	            .expirationTimestamp(OffsetDateTime.now().plusHours(1))
-    	            .build();
+	@Test
+	public void shouldPersistOrderStatusAsString() {
+		for (OrderStatus status : OrderStatus.values()) {
+			Order order = Order.builder().type(OrderType.BUY).price(100.0).volume(10.0).status(status) // aqui estava o
+																										// erro
+					.marketPrice(98.0).timestamp(OffsetDateTime.now())
+					.expirationTimestamp(OffsetDateTime.now().plusHours(1)).build();
 
-    	    repository.save(order);
-    	}
+			repository.save(order);
+		}
 
-        entityManager.flush(); // força persistência no banco
-        entityManager.clear(); // limpa cache do JPA
+		entityManager.flush();
+		entityManager.clear();
 
-        // Consulta nativa diretamente à tabela
-        Query query = entityManager.createNativeQuery("SELECT status FROM orders");
-        List<String> statuses = query.getResultList();
+		Query query = entityManager.createNativeQuery("SELECT status FROM orders");
+		@SuppressWarnings("unchecked")
+		List<Object> rawResults = query.getResultList();
 
-        // Verifica se todos os enums foram persistidos como string
-        assertThat(statuses).containsExactlyInAnyOrderElementsOf(
-                List.of("PENDING", "PARTIAL", "EXECUTED", "CANCELLED", "EXPIRED")
-        );
+		List<String> statuses = rawResults.stream().map(Object::toString).collect(Collectors.toList());
 
-    }
+		assertThat(statuses)
+				.containsExactlyInAnyOrderElementsOf(List.of("PENDING", "PARTIAL", "EXECUTED", "CANCELLED", "EXPIRED"));
+
+	}
 }
