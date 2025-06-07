@@ -63,6 +63,10 @@ public class Order {
 	@Column(nullable = false)
 	private OffsetDateTime expirationTimestamp;
 	
+	// Timestamp that indicates when the order was manually cancelled (if applicable)
+	@Column(nullable = true)
+	private OffsetDateTime cancelledAt;
+	
 	public double getRemainingVolume() {
 	    return volume - executedVolume;
 	}

@@ -50,31 +50,58 @@ The project is built with **Spring Boot**, **Undertow**, and **Log4j2**, aiming 
 
 ---
 
-## 🚀 Current Milestone — `v1.2.0-expiry`
+## 🚀 Current Milestone — `v1.3.0-cancel`
 
-The tag [`v1.2.0-expiry`](https://github.com/rubentrancoso/energy-trade/releases/tag/v1.2.0-expiry) introduces **Order Expiration & Cleanup**, expanding the robustness and integrity of the matching system.
+The tag [`v1.3.0-cancel`](https://github.com/rubentrancoso/energy-trade/releases/tag/v1.3.0-cancel) introduces **Order Cancellation**, allowing clients to cancel pending orders safely and traceably.
 
-This version ensures that expired orders are never executed, and introduces a scheduled cleanup task to maintain data consistency over time.
+This version enhances system integrity by ensuring canceled orders cannot be matched or executed, while maintaining a full audit trail of user actions.
 
 ✅ **Implemented**
-- Validation of expiration timestamp for incoming orders
-- Filtering out expired counterpart orders during matching
-- Status `EXPIRED` automatically assigned when appropriate
-- Scheduled cleanup task (`@Scheduled`) to mark as `EXPIRED` all `PENDING` orders past their expiration timestamp
-- Configurable cleanup interval via `application.properties`
-- Test coverage for expired incoming orders and expired candidates
-- Full audit and logging of expired order handling
+- New endpoint `POST /orders/{id}/cancel` to cancel a pending order
+- Orders must be in `PENDING` or `PARTIAL` state to be eligible
+- Status updated to `CANCELLED` and persisted with timestamp (`cancelledAt`)
+- AuditEvent `ORDER_CANCELLED` is dispatched to the audit service
+- Optional Notification triggered to inform administrators of the cancellation
+- Unit and integration test coverage for edge cases (e.g. canceling already executed or expired orders)
+- Simulation test in `integration-sim` validates full cancellation flow
 
-→ [Full changelog: `v1.2.0-expiry` Release Page](./docs/v1.2.0-expiry.md)
+→ [Full changelog: `v1.3.0-cancel` Release Page](./docs/v1.3.0-cancel.md)
 
 ---
 
 ## 🕘 Deprecated Milestones
 
+### 🕘 `v1.2.0-expiry`
+
+⚠️ This milestone is no longer the active baseline. It was succeeded by `v1.3.0-cancel`.
+
+The tag [`v1.2.0-expiry`](https://github.com/rubentrancoso/energy-trade/releases/tag/v1.2.0-expiry) introduced **Order Expiration & Cleanup**, expanding the robustness and integrity of the matching system.
+
+This version ensures that expired orders are never executed, and introduces a scheduled cleanup task to maintain data consistency over time.
+
+<details>
+  <summary><strong>✅ Implementation</strong></summary>
+
+- Validation of expiration timestamp for incoming orders  
+- Filtering out expired counterpart orders during matching  
+- Status `EXPIRED` automatically assigned when appropriate  
+- Scheduled cleanup task (`@Scheduled`) to mark as `EXPIRED` all `PENDING` orders past their expiration timestamp  
+- Configurable cleanup interval via `application.properties`  
+- Test coverage for expired incoming orders and expired candidates  
+- Full audit and logging of expired order handling  
+
+</details>
+
+→ [Full changelog: `v1.2.0-expiry` Release Page](./docs/v1.2.0-expiry.md)
+
+---
+
 ### 🕘 `v1.1.0-matching`
 ⚠️ This milestone is no longer the active baseline. It was succeeded by `v1.2.0-expiry`.
 
 The tag [`v1.1.0-matching`](https://github.com/rubentrancoso/energy-trade/releases/tag/v1.1.0-matching) introduced the **Order Matching Engine**, the first intelligent execution component of the platform.
+
+This version builds on v1.0.0-base by adding logic for matching BUY and SELL orders based on price and timestamp, tracking volume execution, and handling state transitions.
 
 <details>
   <summary><strong>✅ Implementation</strong></summary>
@@ -95,6 +122,8 @@ The tag [`v1.1.0-matching`](https://github.com/rubentrancoso/energy-trade/releas
 
 ### 🕘 `v1.0.0-base`
 The tag `v1.0.0-base` marked the first stable and functional snapshot of this project.
+
+This version delivers a foundational, end-to-end working system with structured logging, microservice orchestration, and order creation capabilities through a command-line simulator.
 
 <details>
   <summary><strong>✅ Implementation</strong></summary>
@@ -117,7 +146,7 @@ These features will be released incrementally and tagged for easy comparison.
 |---------------------------------------------|------------|---------------------|
 | Order Matching Engine (buy/sell execution)  | ✅ Delivered | `v1.1.0-matching`   |
 | Order Expiration & Cleanup                  | ✅ Delivered | `v1.2.0-expiry`     |
-| Order Cancellation                          | Planned    | `v1.3.0-cancel`     |
+| Order Cancellation                          | ✅ Delivered | `v1.3.0-cancel`     |
 | Pricing Feed & Dynamic Simulation           | Planned    | `v1.4.0-pricing`    |
 | Full Audit Trail & Reporting                | Planned    | `v1.5.0-audit`      |
 | Observability: Dashboards or CLI tools      | Planned    | `v1.6.0-visuals`    |

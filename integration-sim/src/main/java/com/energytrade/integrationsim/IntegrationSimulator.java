@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import com.energytrade.orderservice.model.Order;
+import com.energytrade.orderservice.model.OrderStatus;
 import com.energytrade.orderservice.model.OrderType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -46,6 +47,7 @@ public class IntegrationSimulator implements CommandLineRunner {
 
 			runStandardSimulations();
 			runExpirationEdgeCaseTests();
+			runCancellationTests();  // 🧪 Simulação de cancelamento de ordem
 
 			log.info("📥 Fetching final list of orders for verification...");
 			ResponseEntity<String> allOrders = restTemplate.getForEntity(orderUrl, String.class);
@@ -150,6 +152,56 @@ public class IntegrationSimulator implements CommandLineRunner {
 		log.info("⏳ Waiting for order to expire...");
 		Thread.sleep(7000);
 	}
+	
+	private void runCancellationTests() {
+		log.info("🔁 Running cancellation simulation...");
+
+		try {
+			// ✅ Case 1: Cancel PENDING order
+			Order cancellableOrder = Order.builder()
+					.type(OrderType.BUY).price(150.0).volume(1.0).marketPrice(149.0 + Math.random())
+					.expirationTimestamp(OffsetDateTime.now().plusHours(1)).build();
+			ResponseEntity<Order> createResponse = restTemplate.postForEntity(orderUrl, cancellableOrder, Order.class);
+			Order created = createResponse.getBody();
+			String cancelUrl = orderUrl + "/" + created.getId();
+			restTemplate.delete(cancelUrl);
+			log.info("✅ Cancelled PENDING order ID {}", created.getId());
+
+			// 🔁 Case 2: Cancel already CANCELLED order
+			try {
+				restTemplate.delete(cancelUrl);
+				log.warn("⚠️ Expected failure: Tried to cancel already cancelled order ID {}", created.getId());
+			} catch (Exception e) {
+				log.info("✅ Correctly rejected double cancel attempt: {}", e.getMessage());
+			}
+
+			// 🔁 Case 3: Cancel nonexistent order
+			try {
+				restTemplate.delete(orderUrl + "/99999");
+				log.warn("⚠️ Unexpected success when cancelling nonexistent order.");
+			} catch (Exception e) {
+				log.info("✅ Correctly handled cancellation of nonexistent order: {}", e.getMessage());
+			}
+
+			// 🔁 Case 4: Cancel already EXECUTED order (create, match, then cancel)
+			Order executedOrder = Order.builder()
+					.type(OrderType.BUY).price(99999.0).volume(1.0).marketPrice(100.0)
+					.expirationTimestamp(OffsetDateTime.now().plusHours(1)).build();
+			ResponseEntity<Order> executedResp = restTemplate.postForEntity(orderUrl, executedOrder, Order.class);
+			Order executed = executedResp.getBody();
+			Thread.sleep(500); // let it match
+			try {
+				restTemplate.delete(orderUrl + "/" + executed.getId());
+				log.warn("⚠️ Unexpected success when cancelling EXECUTED order.");
+			} catch (Exception e) {
+				log.info("✅ Correctly rejected cancellation of EXECUTED order: {}", e.getMessage());
+			}
+
+		} catch (Exception e) {
+			log.error("❌ Exception during cancellation test: {}", e.getMessage(), e);
+		}
+	}
+
 
 	private void sendOrders(List<Order> orders) {
 		int i = 1;
