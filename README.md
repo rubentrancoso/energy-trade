@@ -50,20 +50,45 @@ The project is built with **Spring Boot**, **Undertow**, and **Log4j2**, aiming 
 
 ---
 
-## 🚀 Current Milestone — `v1.3.0-cancel`
+## 🚀 Current Milestone — `v1.4.0-pricing`
+
+The tag [`v1.4.0-pricing`](https://github.com/rubentrancoso/energy-trade/releases/tag/v1.4.0-pricing) delivers a **Strategic Architecture Decision for Market Pricing**, documenting how and when market prices are captured and used within the platform.
+
+This milestone does **not include new logic or feature changes** but instead defines the system’s approach to price acquisition — favoring stored values at order creation time — following best practices from real-world trading engines.
+
+✅ **Documented Strategy**
+- Orders will store the current market price at creation time (`marketPrice`)
+- The matching engine will **not** query external pricing services during execution
+- This decision improves performance, determinism, and fault tolerance
+- External pricing is still queried via `pricing-service`, backed by a mock gateway
+- The service architecture is now ready for future evolution (e.g. pricing streams, slippage analysis, multi-asset pricing)
+
+→ [Full changelog: `v1.4.0-pricing` Release Page](./docs/v1.4.0-pricing.md)
+
+---
+
+## 🕘 Deprecated Milestones
+
+### 🕘 `v1.3.0-cancel`
+
+⚠️ This milestone is no longer the active baseline. It was succeeded by `v1.4.0-pricing`.
 
 The tag [`v1.3.0-cancel`](https://github.com/rubentrancoso/energy-trade/releases/tag/v1.3.0-cancel) introduces **Order Cancellation**, allowing clients to cancel pending orders safely and traceably.
 
 This version enhances system integrity by ensuring canceled orders cannot be matched or executed, while maintaining a full audit trail of user actions.
 
-✅ **Implemented**
-- New endpoint `POST /orders/{id}/cancel` to cancel a pending order
-- Orders must be in `PENDING` or `PARTIAL` state to be eligible
-- Status updated to `CANCELLED` and persisted with timestamp (`cancelledAt`)
-- AuditEvent `ORDER_CANCELLED` is dispatched to the audit service
-- Optional Notification triggered to inform administrators of the cancellation
-- Unit and integration test coverage for edge cases (e.g. canceling already executed or expired orders)
-- Simulation test in `integration-sim` validates full cancellation flow
+<details>
+  <summary><strong>✅ Implementation</strong></summary>
+
+- New endpoint `POST /orders/{id}/cancel` to cancel a pending order  
+- Orders must be in `PENDING` or `PARTIAL` state to be eligible  
+- Status updated to `CANCELLED` and persisted with timestamp (`cancelledAt`)  
+- AuditEvent `ORDER_CANCELLED` is dispatched to the audit service  
+- Optional Notification triggered to inform administrators of the cancellation  
+- Unit and integration test coverage for edge cases (e.g. canceling already executed or expired orders)  
+- Simulation test in `integration-sim` validates full cancellation flow  
+
+</details>
 
 → [Full changelog: `v1.3.0-cancel` Release Page](./docs/v1.3.0-cancel.md)
 
@@ -147,7 +172,7 @@ These features will be released incrementally and tagged for easy comparison.
 | Order Matching Engine (buy/sell execution)  | ✅ Delivered | `v1.1.0-matching`   |
 | Order Expiration & Cleanup                  | ✅ Delivered | `v1.2.0-expiry`     |
 | Order Cancellation                          | ✅ Delivered | `v1.3.0-cancel`     |
-| Pricing Feed & Dynamic Simulation           | Planned    | `v1.4.0-pricing`    |
+| Pricing Feed & Dynamic Simulation           | ✅ Delivered | `v1.4.0-pricing`    |
 | Full Audit Trail & Reporting                | Planned    | `v1.5.0-audit`      |
 | Observability: Dashboards or CLI tools      | Planned    | `v1.6.0-visuals`    |
 | Stress Tests & Load Simulation              | Planned    | `v1.7.0-stress`     |
