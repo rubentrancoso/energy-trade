@@ -57,55 +57,29 @@ Trading venues (e.g., Binance, NYSE, CME) design their matching engines to opera
 - **Binance’s matching engine** processes buy/sell orders solely based on internal order book logic (price & time priority), without external calls[^1].  
 - **CME Globex** runs high-performance matching servers embedded within its datacenter – colocated, ultra-low-latency, and decoupled from external pricing feeds[^2].
 
-[^1]: “Binance’s algorithmic matching engines ingest incoming buy/sell orders and match them … solely according to price and time.” [OFAC filing][^1link]  
-[^2]: “CME Globex Matching Algorithms” operate within dedicated matching systems, with algorithms like FIFO, pro-rata, etc. [CME documentation][^2link]
-
-[^1link]: https://ofac.treasury.gov/system/files/2023-11/20231121_binance.pdf  
-[^2link]: https://www.cmegroup.com/education/matching-algorithm-overview.html
-
----
-
 ### 2. They rely on **limit prices submitted with orders**
 Orders carry their own limit prices; matching engines use these to find compatible counterparts:
 
 - Binance, CME, and others primarily use **price-time priority**, where limit orders dominate decision logic[^3][^4].
 
-[^3]: Binance Academy: “Matching engines … follow predefined rules … e.g., FIFO.” [Binance Academy][^3link]  
-[^4]: Devexperts: “Order matching engine … matches buy and sell orders … using price‐time priority.” [Devexperts blog][^4link]
-
-[^3link]: https://www.binance.com/en/square/post/5608556717810  
-[^4link]: https://devexperts.com/blog/order-matching-engine-everything-you-need-to-know/
-
----
-
 ### 3. Market price snapshots are captured separately (analytics/display)
-- Market data feeds are handled **asynchronously**, not within the matching engine core.[^5](#5)  
-- These snapshots are used in dashboards, UIs, and analytics systems, separate from actual matching logic.
-
-[^5]: Crypto/blog "How Order Matching Engines Work…": mentions a separate *Market data feed* component, outside the engine core. [Krayon Digital][^5link]
-
-[^5link]: https://www.krayondigital.com/blog/how-order-matching-engines-work-in-crypto-exchanges
-
----
+- Market data feeds are handled **asynchronously**, not within the matching engine core.  
+- These snapshots are used in dashboards, UIs, and analytics systems, separate from actual matching logic[^5].
 
 ### 4. External pricing feeds are processed asynchronously
-- Exchanges ingest live data via subscribing to external/own market feeds, but these run **independently** from core order matching, for analytics or user display.
-- For example, CME and others operate **distinct feed handlers**, separated from matching services.[^6](#6)
-
-[^6]: Databento’s documentation discusses usage of **raw market data feeds** for analytics and low-latency trading, not tied to matching execution.[^6link]
-
-[^6link]: https://databento.com/pcaps
+- Exchanges ingest live data via subscribing to external/own market feeds, but these run **independently** from core order matching, for analytics or user display.  
+- For example, CME and others operate **distinct feed handlers**, separated from matching services[^6].
 
 ---
 
 ### ✅ Summary Table
 
-| Claim | Verified? | Source(s) |
-|------|-----------|-----------|
-| No external calls during matching | ✅ Yes | [^1], [^2] |
-| Limit orders drive matching | ✅ Yes | [^3], [^4] |
-| Market data feeds are async | ✅ Yes | [^5], [^6] |
-| Pricing feeds are separate | ✅ Yes | [^6] |
+| Claim                                      | Verified? | Source(s)       |
+|-------------------------------------------|-----------|-----------------|
+| No external calls during matching         | ✅ Yes    | [^1], [^2]      |
+| Limit orders drive matching               | ✅ Yes    | [^3], [^4]      |
+| Market data feeds are async               | ✅ Yes    | [^5]            |
+| Pricing feeds are separate from matching  | ✅ Yes    | [^6]            |
 
 ---
 
@@ -117,14 +91,20 @@ Including this verified rationale (with footnotes) reinforces the architectural 
 
 ---
 
-### Footnotes
+## 📎 Footnotes
 
-1. **Binance**: internal order book-based matching engine  
-2. **CME Globex**: colocated matching, algorithms FIFO/pro-rata  
-3. **Binance Academy**: matching logic via FIFO/priorities  
-4. **Devexperts**: explanation of order book-driven matching  
-5. **Krayon Digital**: separate market feed systems  
-6. **Databento**: external feed processing for analytics  
+[^1]: “Binance’s algorithmic matching engines ingest incoming buy/sell orders and match them … solely according to price and time.” — [OFAC filing](https://ofac.treasury.gov/system/files/2023-11/20231121_binance.pdf)
+
+[^2]: “CME Globex Matching Algorithms” operate within dedicated matching systems, with algorithms like FIFO, pro-rata, etc. — [CME documentation](https://www.cmegroup.com/education/matching-algorithm-overview.html)
+
+[^3]: Binance Academy: “Matching engines … follow predefined rules … e.g., FIFO.” — [Binance Academy](https://www.binance.com/en/square/post/5608556717810)
+
+[^4]: Devexperts: “Order matching engine … matches buy and sell orders … using price‐time priority.” — [Devexperts Blog](https://devexperts.com/blog/order-matching-engine-everything-you-need-to-know/)
+
+[^5]: “How Order Matching Engines Work…” — [Krayon Digital](https://www.krayondigital.com/blog/how-order-matching-engines-work-in-crypto-exchanges)
+
+[^6]: “Using raw market data feeds for analytics and trading, separate from execution logic.” — [Databento](https://databento.com/pcaps)
+
 
 ---
 
